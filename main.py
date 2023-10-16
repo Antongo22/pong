@@ -5,7 +5,8 @@ import pyray
 from raylib import colors
 import random
 import math
-import time  # Добавляем модуль time
+import time
+
 
 class Ball:
     def __init__(self, width, height):
@@ -28,11 +29,12 @@ class Ball:
 
         return self.x, self.y
 
+
 class Game:
     def __init__(self):
         self.freeze_time = 60
         self.score_p = 1
-        self.fps_timer = time.time()  # Инициализируем таймер
+        self.fps_timer = time.time()
 
     def show_game_over_message(self, score):
         root = tk.Tk()
@@ -119,7 +121,8 @@ class Game:
                 pyray.set_target_fps(self.freeze_time)
 
             ball_x, ball_y = ball.update(width, height)
-            pyray.draw_texture(ball.texture, ball_x - ball.texture.width // 2, ball_y - ball.texture.height // 2, colors.WHITE)
+            pyray.draw_texture(ball.texture, ball_x - ball.texture.width // 2, ball_y - ball.texture.height // 2,
+                               colors.WHITE)
 
             if ball_y + 50 >= platform_y and ball_x >= platform_x and ball_x <= platform_x + platform_width and ball_y <= platform_y:
                 if not last_hit_platform:
@@ -138,6 +141,7 @@ class Game:
 
         pyray.close_window()
         self.show_game_over_message(score)
+
 
 if __name__ == '__main__':
     game = Game()
