@@ -35,6 +35,21 @@ class Game:
         self.freeze_time = 60
         self.score_p = 1
         self.fps_timer = time.time()
+        self.record = 0
+        self.load_record()
+
+    def load_record(self):
+        try:
+            with open("recs.txt", "r") as file:
+                self.record = int(file.read())
+        except FileNotFoundError:
+            self.record = 0
+
+    def save_record(self, score):
+        if score > self.record:
+            self.record = score
+            with open("recs.txt", "w") as file:
+                file.write(str(score))
 
     def show_game_over_message(self, score):
         root = tk.Tk()
@@ -51,7 +66,12 @@ class Game:
         # Увеличиваем размер окна
         root.geometry("300x150")
 
-        message = tk.Label(root, text=f"Вы проиграли. Ваши очки: {score}")
+        if score > self.record:
+            self.save_record(score)
+            message = tk.Label(root, text=f"Вы побили рекорд! Новый рекорд: {score}")
+        else:
+            message = tk.Label(root, text=f"Вы проиграли. Ваши очки: {score}, Рекорд: {self.record}")
+
         message.pack()
 
         play_again_button = tk.Button(root, text="Играть заново", command=play_again)
@@ -135,7 +155,7 @@ class Game:
             if ball_y + 50 > height:
                 game_over = True
 
-            pyray.draw_text(f"Score: {score}", 10, 10, 20, colors.WHITE)
+            pyray.draw_text(f"Score: {score} | Record: {self.record}", 10, 10, 20, colors.WHITE)
 
             pyray.end_drawing()
 
